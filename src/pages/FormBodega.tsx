@@ -64,7 +64,7 @@ const FormBodega: React.FC = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Crear Bodega</h2>
+      <h2 className='text-center'>Crear Bodega</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="nombre">
           <Form.Label>Nombre</Form.Label>

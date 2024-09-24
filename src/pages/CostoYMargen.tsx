@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Form } from 'react-bootstrap';
+import { Table, Button, Form, Row } from 'react-bootstrap';
 import { CostoYMargen } from '../types/CostoYMargen';
 
 const CostosYMargenes: React.FC = () => {
@@ -32,7 +32,7 @@ const CostosYMargenes: React.FC = () => {
     const handleInputChange = (index: number, field: string, value: string) => {
         const updatedCostos = [...costos];
         (updatedCostos[index] as any)[field] = Number(value); // Asegurar que el valor sea numérico
-    
+
         // Verificar si el costo ya está en los modificados, de lo contrario añadirlo
         const existingIndex = modifiedCostos.findIndex((c) => c.id === updatedCostos[index].id);
         if (existingIndex !== -1) {
@@ -42,11 +42,9 @@ const CostosYMargenes: React.FC = () => {
         } else {
             setModifiedCostos([...modifiedCostos, updatedCostos[index]]);
         }
-    
+
         setCostos(updatedCostos);
     };
-    
-    
 
     // Función para manejar el clic en el botón de edición
     const handleEditClick = () => {
@@ -56,7 +54,7 @@ const CostosYMargenes: React.FC = () => {
     // Función para guardar los cambios y deshabilitar el modo edición
     const handleSaveClick = () => {
         setEditMode(false);
-    
+
         // Calcular costoSinIva solo si costoConIva ha sido modificado
         const updatedModifiedCostos = modifiedCostos.map((costo) => {
             if (costo.costoConIva) {
@@ -64,9 +62,9 @@ const CostosYMargenes: React.FC = () => {
             }
             return costo;
         });
-    
+
         console.log(updatedModifiedCostos);
-    
+
         // Enviar solo los costos modificados al servidor
         const apiUrl = import.meta.env.VITE_API_URL;
         fetch(`${apiUrl}/costoymargen/multiple-update`, {
@@ -83,26 +81,28 @@ const CostosYMargenes: React.FC = () => {
             })
             .catch((error) => console.error('Error al actualizar los costos/márgenes:', error));
     };
-    
-    
 
     return (
         <div className="container mt-4">
-            <h2>Costos y márgenes</h2>
+            <h2 className='text-center'>Costos y márgenes</h2>
 
-            {/* Barra de búsqueda */}
-            <Form className="mb-3 w-25">
-                <Form.Control
-                    type="text"
-                    placeholder="Buscar por descripción"
-                    value={searchTerm}
-                    onChange={handleSearch} // Actualiza el término de búsqueda
-                />
-            </Form>
+            <div className='d-flex gap-2'>
 
-            <Button variant="primary" onClick={editMode ? handleSaveClick : handleEditClick} className="mb-3">
-                {editMode ? 'Guardar' : 'Editar'}
-            </Button>
+                {/* Barra de búsqueda */}
+                <Form className="mb-3 w-25">
+                    <Form.Control
+                        type="text"
+                        placeholder="Buscar por descripción"
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
+                </Form>
+
+                <Button variant="primary" onClick={editMode ? handleSaveClick : handleEditClick} className="mb-3">
+                    {editMode ? 'Guardar' : 'Editar'}
+                </Button>
+
+            </div>
 
             <div className="table-responsive text-center">
                 <Table striped bordered hover>

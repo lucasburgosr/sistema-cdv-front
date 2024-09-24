@@ -92,7 +92,7 @@ const FormCostoYMargen: React.FC = () => {
 
   return (
     <div className='container mt-4'>
-      <h2>Costos y Márgenes</h2>
+      <h2 className='text-center'>Costos y Márgenes</h2>
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Col>
@@ -114,7 +114,6 @@ const FormCostoYMargen: React.FC = () => {
           </Col>
         </Row>
 
-        {/* Los demás campos numéricos */}
         <Row className="mb-3">
           <Col>
             <Form.Label>Descuento %</Form.Label>
@@ -236,27 +235,6 @@ const FormCostoYMargen: React.FC = () => {
               type="number"
               name="costoEnvioCaja"
               value={formData.costoEnvioCaja}
-              onChange={handleChange}
-            />
-          </Col>
-        </Row>
-
-        <Row className="mb-3">
-          <Col>
-            <Form.Label>Cantidad Mínima de Venta Mayorista</Form.Label>
-            <Form.Control
-              type="number"
-              name="cantidadMinVentaMayorista"
-              value={formData.cantidadMinVentaMayorista}
-              onChange={handleChange}
-            />
-          </Col>
-          <Col>
-            <Form.Label>Cantidad Mínima de Venta Distri</Form.Label>
-            <Form.Control
-              type="number"
-              name="cantidadMinVentaDistri"
-              value={formData.cantidadMinVentaDistri}
               onChange={handleChange}
             />
           </Col>

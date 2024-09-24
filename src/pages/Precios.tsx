@@ -1,31 +1,51 @@
 import { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Form } from 'react-bootstrap';
 import { Producto } from '../types/Producto';
 import { ParametrosMeLi } from '../types/ParametrosMeLi';
 
 const Precios: React.FC = () => {
-
     const [productos, setProductos] = useState<Producto[]>([]);
     const [parametrosMeLi, setParametrosMeLi] = useState<ParametrosMeLi[]>([]);
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
 
     const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         fetch(`${apiUrl}/productos`)
             .then(response => response.json())
-            .then(data => { setProductos(data), console.log(data) })
+            .then(data => {
+                setProductos(data);
+                console.log(data);
+            })
             .catch(error => console.error('Error fetching productos:', error));
 
         fetch(`${apiUrl}/parametros-ml`)
             .then(response => response.json())
-            .then(data => { setParametrosMeLi(data), console.log(data) })
+            .then(data => {
+                setParametrosMeLi(data);
+                console.log(data);
+            })
             .catch(error => console.error('Error fetching parámetros:', error));
-    }, []);
+    }, [apiUrl]);
+
+    // Filtrar productos por descripción basado en el término de búsqueda
+    const filteredProductos = productos.filter(producto =>
+        producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className='container mt-4'>
+            <h2 className='text-center'>Precios</h2>
 
-            <h2>Precios</h2>
+            {/* Input de búsqueda */}
+            <Form.Group className="mb-3 w-25" controlId="search">
+                <Form.Control
+                    type="text"
+                    placeholder="Buscar por descripción..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
+                />
+            </Form.Group>
 
             <div className='table-responsive text-center'>
                 <Table striped bordered hover>
@@ -61,7 +81,7 @@ const Precios: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {Array.isArray(productos) && productos.map(producto => (
+                        {Array.isArray(filteredProductos) && filteredProductos.map(producto => (
                             <tr key={producto.id}>
                                 <td>{producto.descripcion}</td>
 
@@ -72,9 +92,7 @@ const Precios: React.FC = () => {
                                         <td>{producto.PrecioMinorista.precioCaja}</td>
                                     </>
                                 ) : (
-                                    <>
-                                        <td colSpan={2}>N/A</td>
-                                    </>
+                                    <td colSpan={2}>N/A</td>
                                 )}
 
                                 {/* Verificación para Precio Mayorista */}
@@ -84,9 +102,7 @@ const Precios: React.FC = () => {
                                         <td>{producto.PrecioMayorista.precioCaja}</td>
                                     </>
                                 ) : (
-                                    <>
-                                        <td colSpan={2}>N/A</td>
-                                    </>
+                                    <td colSpan={2}>N/A</td>
                                 )}
 
                                 {/* Verificación para Precio Sobremesa */}
@@ -96,9 +112,7 @@ const Precios: React.FC = () => {
                                         <td>{producto.PrecioSobremesa.precioPorCopa}</td>
                                     </>
                                 ) : (
-                                    <>
-                                        <td colSpan={2}>N/A</td>
-                                    </>
+                                    <td colSpan={2}>N/A</td>
                                 )}
 
                                 {/* Verificación para Precio Distribución */}
@@ -108,9 +122,7 @@ const Precios: React.FC = () => {
                                         <td>{producto.PrecioDistribucion.precioMayCaja}</td>
                                     </>
                                 ) : (
-                                    <>
-                                        <td colSpan={2}>N/A</td>
-                                    </>
+                                    <td colSpan={2}>N/A</td>
                                 )}
 
                                 {/* Verificación para Precio Buenos Aires */}
@@ -120,11 +132,10 @@ const Precios: React.FC = () => {
                                         <td>{producto.PrecioBuenosAires.precioCaja}</td>
                                     </>
                                 ) : (
-                                    <>
-                                        <td colSpan={2}>N/A</td>
-                                    </>
+                                    <td colSpan={2}>N/A</td>
                                 )}
-                                {producto.PrecioMercadoLibre.esMeLi && parametrosMeLi.length > 0 ? (
+
+                                {producto.PrecioMercadoLibre?.esMeLi && parametrosMeLi.length > 0 ? (
                                     <>
                                         <td>{producto.PrecioMercadoLibre.precioMLIndividual}</td>
                                         <td>{producto.PrecioMercadoLibre.precioCuotas3Individual}</td>
@@ -144,8 +155,7 @@ const Precios: React.FC = () => {
                 </Table>
             </div>
         </div>
-
     );
-}
+};
 
 export default Precios;

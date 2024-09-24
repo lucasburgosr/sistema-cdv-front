@@ -212,7 +212,7 @@ const ParametrosMercadoLibre = () => {
                 </Container>
             ) : (
                 <>
-                    <h1>Parámetros de Mercado Libre</h1>
+                    <h2 className='text-center mt-4'>Parámetros de Mercado Libre</h2>
                     <Table striped bordered hover>
                         <thead>
                             <tr>

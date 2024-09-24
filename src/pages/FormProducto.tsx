@@ -121,7 +121,7 @@ const FormProducto: React.FC = () => {
 
     return (
         <div className="container mt-4">
-            <h2>{isEdit ? 'Modificar Producto' : 'Crear Producto'}</h2>
+            <h2 className='text-center'>{isEdit ? 'Modificar Producto' : 'Crear Producto'}</h2>
             <Form onSubmit={handleSubmit}>
 
                 {/* Bodega */}

@@ -44,7 +44,7 @@ const FormVarietal: React.FC = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Crear varietal</h2>
+      <h2 className='text-center'>Crear varietal</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="nombre">
           <Form.Label>Nombre</Form.Label>
