@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Form, Row } from 'react-bootstrap';
+import { Table, Button, Form } from 'react-bootstrap';
 import { CostoYMargen } from '../types/CostoYMargen';
 
 const CostosYMargenes: React.FC = () => {
