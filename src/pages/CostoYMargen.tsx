@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Form } from 'react-bootstrap';
 import { CostoYMargen } from '../types/CostoYMargen';
+import '../styles/CostoYMargen.css'
 
 const CostosYMargenes: React.FC = () => {
     const [costos, setCostos] = useState<CostoYMargen[]>([]);
@@ -109,8 +110,8 @@ const CostosYMargenes: React.FC = () => {
                     <thead className="fs-6 text">
                         <tr>
                             <th>Producto</th>
-                            <th>Costo sin IVA</th>
-                            <th>Costo con IVA</th>
+                            <th className='px-4'>Costo sin IVA</th>
+                            <th className='px-4'>Costo con IVA</th>
                             <th>Descuento</th>
                             <th>Descuento PP</th>
                             <th>Acciones 1</th>
@@ -122,7 +123,7 @@ const CostosYMargenes: React.FC = () => {
                             <th>Margen Depósito</th>
                             <th>Margen Distribución</th>
                             <th>Margen Sobremesa</th>
-                            <th>Costo de envío caja</th>
+                            <th className='px-4'>Costo de envío caja</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -131,7 +132,7 @@ const CostosYMargenes: React.FC = () => {
                                 <td>{costo.Producto.descripcion}</td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.costoSinIva}
                                             onChange={(e) => handleInputChange(index, 'costoSinIva', e.target.value)}
@@ -142,7 +143,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.costoConIva}
                                             onChange={(e) => handleInputChange(index, 'costoConIva', e.target.value)}
@@ -153,7 +154,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.descuento}
                                             onChange={(e) => handleInputChange(index, 'descuento', e.target.value)}
@@ -164,7 +165,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.descuentoPp}
                                             onChange={(e) => handleInputChange(index, 'descuentoPp', e.target.value)}
@@ -175,7 +176,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.acciones1}
                                             onChange={(e) => handleInputChange(index, 'acciones1', e.target.value)}
@@ -186,7 +187,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.acciones2}
                                             onChange={(e) => handleInputChange(index, 'acciones2', e.target.value)}
@@ -197,7 +198,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.margenMin}
                                             onChange={(e) => handleInputChange(index, 'margenMin', e.target.value)}
@@ -208,7 +209,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.margenMay}
                                             onChange={(e) => handleInputChange(index, 'margenMay', e.target.value)}
@@ -219,7 +220,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.margenMeLi}
                                             onChange={(e) => handleInputChange(index, 'margenMeLi', e.target.value)}
@@ -230,7 +231,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.margenBsAs}
                                             onChange={(e) => handleInputChange(index, 'margenBsAs', e.target.value)}
@@ -241,7 +242,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.margenDepo}
                                             onChange={(e) => handleInputChange(index, 'margenDepo', e.target.value)}
@@ -252,7 +253,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.margenDistri}
                                             onChange={(e) => handleInputChange(index, 'margenDistri', e.target.value)}
@@ -263,7 +264,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.margenSobremesa}
                                             onChange={(e) => handleInputChange(index, 'margenSobremesa', e.target.value)}
@@ -274,7 +275,7 @@ const CostosYMargenes: React.FC = () => {
                                 </td>
                                 <td>
                                     {editMode ? (
-                                        <input
+                                        <Form.Control
                                             type="number"
                                             value={costo.costoEnvioCaja}
                                             onChange={(e) => handleInputChange(index, 'costoEnvioCaja', e.target.value)}

@@ -9,86 +9,80 @@ const FormCostoYMargen: React.FC = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    costo: costo || 0,
+    costo: costo || '',
     iva: costoConIva || 0,
-    descuento: 0, // Inicializar con 0 en lugar de parseFloat('')
-    descuentoPp: 0,
-    acciones1: 0,
-    acciones2: 0,
-    margenMin: 0,
-    margenMay: 0,
-    margenMeLi: 0,
-    margenBsAs: 0,
-    margenDepo: 0,
-    margenDistri: 0,
-    margenSobremesa: 0,
+    descuento: '', // Inicializar con 0 en lugar de parseFloat('')
+    descuentoPp: '',
+    acciones1: '',
+    acciones2: '',
+    margenMin: '',
+    margenMay: '',
+    margenMeLi: '',
+    margenBsAs: '',
+    margenDepo: '',
+    margenDistri: '',
+    margenSobremesa: '',
     fechaActualizacionCosto: Date.now(),
     fechaActualizacionMargenODescuento: Date.now(),
-    costoEnvioCaja: 0,
-    cantidadMinVentaMayorista: 0,
-    cantidadMinVentaDistri: 0,
+    costoEnvioCaja: '',
+    cantidadMinVentaMayorista: '',
+    cantidadMinVentaDistri: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    // Permitir que los valores numéricos manejen 0 correctamente
-    const parsedValue = ['descuento', 'descuentoPp', 'acciones1', 'acciones2', 'margenMin', 'margenMay', 'margenMeLi', 'margenBsAs', 'margenDepo', 'margenDistri', 'margenSobremesa', 'costoEnvioCaja', 'cantidadMinVentaMayorista', 'cantidadMinVentaDistri'].includes(name)
-      ? parseFloat(value) || 0  // Aquí permitimos que el valor 0 sea válido
-      : value;
-
+    // Permitir que los valores vacíos permanezcan como están sin forzarlos a ser 0
     setFormData({
       ...formData,
-      [name]: parsedValue,  // Actualizamos el estado con valores numéricos
+      [name]: value,
     });
-  };
+};
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
 
-    const idNumber = Number(id);
-    let costoSinIva, costoFinalConIva;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (costoConIva) {
-      costoFinalConIva = parseFloat(costo) || 0;
-      costoSinIva = Math.round(costoFinalConIva / 1.21);
-    } else {
-      costoSinIva = parseFloat(costo) || 0;
-      costoFinalConIva = costoSinIva * 1.21;
+  const idNumber = Number(id);
+
+  let costoSinIva, costoFinalConIva;
+  if (costoConIva) {
+    costoFinalConIva = parseFloat(costo) || 0; // Si está vacío, lo tomamos como 0
+    costoSinIva = Math.round(costoFinalConIva / 1.21);
+  } else {
+    costoSinIva = parseFloat(costo) || 0;
+    costoFinalConIva = costoSinIva * 1.21;
+  }
+
+  try {
+    const endpoint = `${import.meta.env.VITE_API_URL}/costoymargen`;
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        productoId: idNumber,
+        ...formData, 
+        costoConIva: costoFinalConIva || undefined, // Si está vacío, no mandamos nada
+        costoSinIva: costoSinIva || undefined,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al guardar los costos y márgenes');
     }
 
-    try {
-      const endpoint = `${import.meta.env.VITE_API_URL}/costoymargen`;
+    alert('Costos y márgenes guardados exitosamente');
+    navigate('/');
+  } catch (error: any) {
+    console.error('Error:', error.message || 'Error desconocido');
+    alert(`Error: ${error.message || 'No se pudieron crear los costos'}`);
+  }
+};
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          productoId: idNumber,
-          costoConIva: costoFinalConIva,
-          costoSinIva: costoSinIva,
-          ...formData,
-          iva: costoConIva,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.log(errorData);
-        throw new Error(errorData.message || 'Error al guardar los costos y márgenes');
-      }
-
-      alert('Costos y márgenes guardados exitosamente');
-
-      navigate('/')
-
-    } catch (error: any) {
-      console.error('Error:', error.message || 'Error desconocido');
-      alert(`Error: ${error.message || 'No se pudieron crear los costos'}`);
-    }
-  };
 
   return (
     <div className='container mt-4'>
