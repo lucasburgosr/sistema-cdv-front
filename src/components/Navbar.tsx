@@ -32,6 +32,7 @@ const AppNavbar: React.FC = () => {
             <Nav.Link href="/costosymargenes">Costos</Nav.Link>
             <Nav.Link href="/precios">Precios</Nav.Link>
             <Nav.Link href="/parametros-ml">Parámetros ML</Nav.Link>
+            <Nav.Link href="/promociones">Promociones</Nav.Link>
             <NavDropdown title="Acciones" id="basic-nav-dropdown" align="end">
               <NavDropdown.Item onClick={handleCreateProduct}>Crear Producto</NavDropdown.Item>
               <NavDropdown.Item onClick={handleCreateBodega}>Crear Bodega</NavDropdown.Item>

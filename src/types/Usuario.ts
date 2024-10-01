@@ -1,6 +1,7 @@
-export interface Usuario {
+export default interface Usuario {
     id: number,
     nombreUsuario: string,
+    clave: string,
     esAdmin: boolean,
     vistaPrecioMay: boolean,
     vistaPrecioMin: boolean,

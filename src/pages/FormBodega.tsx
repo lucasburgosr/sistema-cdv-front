@@ -11,10 +11,13 @@ const FormBodega: React.FC = () => {
     margenMay: '',
     margenDepo: '',
     margenDistri: '',
+    costo: '',
     costoConIva: '',
     costoSinIva: '',
     proveedor: ''
   });
+
+  const [isConIva, setIsConIva] = useState(true); // Estado para manejar el checkbox de IVA
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -24,8 +27,31 @@ const FormBodega: React.FC = () => {
     });
   };
 
+  // Maneja el cambio en el checkbox
+  const handleCheckboxChange = () => {
+    setIsConIva(!isConIva); // Cambia el estado del checkbox entre con IVA y sin IVA
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const costo = parseFloat(formData.costo);
+    let costoConIva = 0;
+    let costoSinIva = 0;
+
+    if (isConIva) {
+      costoConIva = costo;
+      costoSinIva = Math.round(costo / 1.21);
+    } else {
+      costoSinIva = costo;
+      costoConIva = costo * 1.21;
+    }
+
+    const updatedFormData = {
+      ...formData,
+      costoConIva: costoConIva.toFixed(2),
+      costoSinIva: costoSinIva.toFixed(2),
+    };
 
     try {
       const endpoint = `${import.meta.env.VITE_API_URL}/bodegas`;
@@ -35,7 +61,7 @@ const FormBodega: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
 
       if (!response.ok) {
@@ -53,10 +79,12 @@ const FormBodega: React.FC = () => {
         margenMay: '',
         margenDepo: '',
         margenDistri: '',
+        costo: '',
         costoConIva: '',
         costoSinIva: '',
         proveedor: ''
       });
+      setIsConIva(true); // Restablece el checkbox a "Con IVA"
     } catch (error) {
       console.error('Error:', error);
     }
@@ -66,6 +94,30 @@ const FormBodega: React.FC = () => {
     <div className="container mt-4">
       <h2 className='text-center'>Crear Bodega</h2>
       <Form onSubmit={handleSubmit}>
+
+        {/* Campo de Costo */}
+        <Form.Group controlId="costo">
+          <Form.Label>Costo</Form.Label>
+          <Form.Control
+            type="number"
+            name="costo"
+            value={formData.costo}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+            required
+          />
+        </Form.Group>
+
+        {/* Checkbox para indicar si es con IVA o sin IVA */}
+        <Form.Group controlId="conIvaCheckbox">
+          <Form.Check
+            type="checkbox"
+            label={isConIva ? 'Con IVA' : 'Sin IVA'}
+            checked={isConIva}
+            onChange={handleCheckboxChange}
+          />
+        </Form.Group>
+
+        {/* Otros campos del formulario */}
         <Form.Group controlId="nombre">
           <Form.Label>Nombre</Form.Label>
           <Form.Control
@@ -146,28 +198,6 @@ const FormBodega: React.FC = () => {
             type="number"
             name="margenDistri"
             value={formData.margenDistri}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="costoConIva">
-          <Form.Label>Costo con IVA</Form.Label>
-          <Form.Control
-            type="number"
-            name="costoConIva"
-            value={formData.costoConIva}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="costoSinIva">
-          <Form.Label>Costo sin IVA</Form.Label>
-          <Form.Control
-            type="number"
-            name="costoSinIva"
-            value={formData.costoSinIva}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
             required
           />
