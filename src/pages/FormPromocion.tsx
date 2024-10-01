@@ -84,8 +84,8 @@ const FormPromocion: React.FC = () => {
     e.preventDefault();
 
     const promocion = {
-      nombre: nombrePromocion,
-      productos: productosSeleccionados,
+      nombrePromocion: nombrePromocion,
+      productosSeleccionados: productosSeleccionados,
       costoTotal,
       precioTotal: precioPropuesto,
       margenPromedio,
